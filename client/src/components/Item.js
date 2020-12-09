@@ -18,6 +18,17 @@ function Item(props) {
     return <h2>Loading item data...</h2>;
   }
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    axios.delete(`http://localhost:3333/items/${item.id}`)
+    .then(res => {
+      console.log(res)
+      props.setItems(res.data);
+      push('/item-list');
+    })
+    .catch(err => console.error(err))
+  }
+
   return (
     <div className="item-wrapper">
       <div className="item-header">
@@ -44,10 +55,10 @@ function Item(props) {
         path="/item-list/:id/shipping"
         render={props => <ItemShipping {...props} item={item} />}
       />
-      <button className="md-button">
+      <button className="md-button" onClick={() => push(`/update-item/${item.id}`)}>
         Edit
       </button>
-      <button className="md-button">
+      <button className="md-button" onClick={handleDelete}>
         Delete
       </button>
     </div>
